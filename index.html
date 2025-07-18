@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta tag to define character encoding -->
+  <meta charset="UTF-8"/>
+
+  <!-- Viewport settings for responsive design on mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- Title displayed in the browser tab -->
+  <title>My Learning Page</title>
+
+  <!-- External CSS stylesheet link for styling the page -->
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- AOS (Animate On Scroll) library for scroll animations -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+</head>
+
+<body>
+  <!-- ============================
+       HEADER WITH NAVIGATION MENU
+       ============================ -->
+  <header>
+    <h1 style="color: rgb(107, 107, 255);">Welcome to my page !</h1>
+
+    <!-- Navigation menu with anchor links and toggle buttons -->
+    <nav>
+      <ul>
+        <!-- Link to the homepage (opens a different HTML file) -->
+        <li><a href="index.html">Home</a></li>
+
+        <!-- Buttons to toggle visibility of About and Contact sections -->
+        <li><button onclick="toggleAbout()">About Me</button></li>
+        <li><button onclick="toggleContact()">Contact</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- External JavaScript file that contains toggle functions -->
+  <script src="main.js"></script>
+
+  <!-- ============================
+       MAIN CONTENT SECTION
+       ============================ -->
+  <main class="grid-container">
+
+    <!-- ====== HOME SECTION ====== -->
+    <section id="home" class="grid-item">
+      <h2>Home Page</h2>
+      <p>This is the homepage section.</p>
+    </section>
+
+    <!-- ====== ABOUT SECTION ====== -->
+    <section id="about" class="grid-item">
+      <h2>About</h2>
+      <p>Learn more about us here.</p>
+
+      <!-- Buttons to toggle each subsection -->
+      <div class="about-buttons">
+        <button onclick="toggleSubsection('education')">Education</button>
+        <button onclick="toggleSubsection('careers')">Careers</button>
+        <button onclick="toggleSubsection('hobbies')">Hobbies</button>
+      </div>
+
+      <!-- Collapsible subsections -->
+      <div class="subsection" id="education">
+        <h3>Education</h3>
+        <p>Details about educational background.</p>
+      </div>
+
+      <div class="subsection" id="careers">
+        <h3>Careers</h3>
+        <p>Information on past and current career paths.</p>
+      </div>
+
+      <div class="subsection" id="hobbies">
+        <h3>Hobbies</h3>
+        <p>Some personal hobbies and interests.</p>
+      </div>
+    </section>
+
+    <!-- ====== CONTACT SECTION ====== -->
+    <section id="contact" class="grid-item">
+      <h2>Contact</h2>
+
+      <!-- Simple contact form with name and email fields -->
+      <form id="contactForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ============================
+       FOOTER SECTION
+       ============================ -->
+  <footer>
+    <p>&copy; 2025 My Social Media Link</p>
+
+    <!-- Social media links with icons -->
+    <div class="social-links">
+      <!-- LinkedIn profile link with icon -->
+      <a href="https://www.linkedin.com/in/chancemab/" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/24/174/174857.png" alt="LinkedIn" style="vertical-align:middle;"> LinkedIn
+      </a> |
+
+      <!-- GitHub profile link with icon -->
+      <a href="https://github.com/mabialachance" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/24/25/25231.png" alt="GitHub" style="vertical-align:middle;"> GitHub
+      </a>
+    </div>
+  </footer>
+</body>
+</html>
