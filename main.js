@@ -1,48 +1,172 @@
-// Function to show or hide the "About" section when the button is clicked
-function toggleAbout() {
-  const aboutSection = document.getElementById('about'); // Get the About section by its ID
+/* ─────────────────────────────────────────────
+   main.js — Portfolio interactivity
+───────────────────────────────────────────── */
 
-  // Toggle display between 'block' and 'none'
-  aboutSection.style.display = 
-    (aboutSection.style.display === 'none' || aboutSection.style.display === '') 
-      ? 'block' 
-      : 'none';
-}
+/* ── 1. NAV: add .scrolled class on scroll ── */
+const nav = document.querySelector('nav');
 
-// Function to show or hide the "Contact" section when the button is clicked
-function toggleContact() {
-  const contactSection = document.getElementById('contact'); // Get the Contact section by its ID
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
 
-  // Toggle display between 'block' and 'none'
-  contactSection.style.display = 
-    (contactSection.style.display === 'none' || contactSection.style.display === '') 
-      ? 'block' 
-      : 'none';
-}
+/* ── 2. ACTIVE NAV LINK on scroll ── */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
 
-// Function to show one subsection at a time (Education, Careers, or Hobbies)
-function toggleSubsection(id) {
-  const sections = ['education', 'careers', 'hobbies']; // List of all subsection IDs
+const observerNav = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        navLinks.forEach((link) => link.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  },
+  { threshold: 0.4 }
+);
 
-  // Loop through each section
-  sections.forEach(sec => {
-    const el = document.getElementById(sec); // Get the element by its ID
+sections.forEach((s) => observerNav.observe(s));
 
-    // Show the selected section and hide the others
-    el.style.display = (sec === id) ? 'block' : 'none';
+/* ── 3. SCROLL REVEAL for section content ── */
+const revealTargets = document.querySelectorAll(
+  '.skill-card, .project-card, .timeline-item, .stat, .about-text p'
+);
+
+revealTargets.forEach((el) => el.classList.add('reveal'));
+
+const observerReveal = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // stagger each card slightly
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, (i % 4) * 80);
+        observerReveal.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.15 }
+);
+
+revealTargets.forEach((el) => observerReveal.observe(el));
+
+/* ── 4. TERMINAL TYPEWRITER effect ── */
+const terminalLines = [
+  { type: 'cmd',  text: 'kubectl get nodes -o wide' },
+  { type: 'out',  text: 'NAME            STATUS   AGE' },
+  { type: 'out',  text: 'node-01         \u001b[32mReady\u001b[0m    42d' },
+  { type: 'out',  text: 'node-02         \u001b[32mReady\u001b[0m    42d' },
+  { type: 'out',  text: 'node-03         \u001b[32mReady\u001b[0m    41d' },
+  { type: 'blank' },
+  { type: 'cmd',  text: 'terraform plan' },
+  { type: 'out',  text: '\u2714 Plan: 12 to add, 3 to change, 0 to destroy.' },
+  { type: 'blank' },
+  { type: 'cmd',  text: 'cat .env | grep UPTIME' },
+  { type: 'out',  text: 'UPTIME="99.98%"' },
+  { type: 'out',  text: 'INCIDENTS_THIS_MONTH="0"' },
+];
+
+const terminalBody = document.querySelector('.terminal-body');
+
+function buildTerminal() {
+  if (!terminalBody) return;
+  terminalBody.innerHTML = '';
+
+  let delay = 200;
+
+  terminalLines.forEach((line) => {
+    if (line.type === 'blank') {
+      delay += 120;
+      setTimeout(() => {
+        terminalBody.appendChild(document.createElement('br'));
+      }, delay);
+      return;
+    }
+
+    if (line.type === 'cmd') {
+      delay += 300;
+      setTimeout(() => {
+        const row = document.createElement('div');
+        row.className = 't-line';
+
+        const prompt = document.createElement('span');
+        prompt.className = 't-prompt';
+        prompt.textContent = '❯';
+
+        const cmd = document.createElement('span');
+        cmd.className = 't-cmd';
+        row.appendChild(prompt);
+        row.appendChild(cmd);
+        terminalBody.appendChild(row);
+
+        // cursor blink at end of command
+        let i = 0;
+        const typeInterval = setInterval(() => {
+          cmd.textContent += line.text[i++];
+          if (i >= line.text.length) clearInterval(typeInterval);
+        }, 40);
+      }, delay);
+
+      delay += line.text.length * 40 + 100;
+    }
+
+    if (line.type === 'out') {
+      delay += 80;
+      setTimeout(() => {
+        const out = document.createElement('div');
+        out.className = 't-out';
+        // colour-code known patterns
+        let html = line.text
+          .replace(/Ready/g, '<span class="t-success">Ready</span>')
+          .replace(/✔/g, '<span class="t-success">✔</span>')
+          .replace(/(UPTIME|INCIDENTS_THIS_MONTH)=/g, '<span class="t-key">$1=</span>')
+          .replace(/"([^"]+)"/g, '<span class="t-val">"$1"</span>');
+        out.innerHTML = html;
+        terminalBody.appendChild(out);
+      }, delay);
+    }
   });
+
+  // final blinking cursor line
+  delay += 200;
+  setTimeout(() => {
+    const row = document.createElement('div');
+    row.className = 't-line';
+    const prompt = document.createElement('span');
+    prompt.className = 't-prompt';
+    prompt.textContent = '❯';
+    const cursor = document.createElement('span');
+    cursor.className = 't-cursor';
+    row.appendChild(prompt);
+    row.appendChild(cursor);
+    terminalBody.appendChild(row);
+  }, delay);
 }
 
-// Wait until the DOM is fully loaded before running this initialization
-document.addEventListener('DOMContentLoaded', function () {
-  // Hide the About section by default
-  document.getElementById('about').style.display = 'none';
+// Replay terminal when hero is in view
+const heroObserver = new IntersectionObserver(
+  (entries) => {
+    if (entries[0].isIntersecting) buildTerminal();
+  },
+  { threshold: 0.3 }
+);
 
-  // Hide the Contact section by default
-  document.getElementById('contact').style.display = 'none';
+const hero = document.querySelector('#hero');
+if (hero) heroObserver.observe(hero);
 
-  // Hide all subsections (Education, Careers, Hobbies) by default
-  ['education', 'careers', 'hobbies'].forEach(id => {
-    document.getElementById(id).style.display = 'none';
+/* ── 5. SMOOTH ANCHOR SCROLL (fallback for older browsers) ── */
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener('click', (e) => {
+    const target = document.querySelector(anchor.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 });
+
+/* ── 6. CURRENT YEAR in footer ── */
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
