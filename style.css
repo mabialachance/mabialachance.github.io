@@ -1,0 +1,138 @@
+/* =============================
+   GLOBAL RESET & BASE STYLES
+   ============================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Makes layout sizing more predictable */
+}
+
+body {
+  font-family: Arial, sans-serif; /* Clean readable font */
+  line-height: 1.6; /* Comfortable line spacing */
+  scroll-behavior: smooth; /* Enables smooth anchor link scrolling */
+  background-color: #a2ceb2; /* Soft green background */
+  color: #333; /* Dark text for contrast */
+}
+
+/* =============================
+   HEADER STYLES
+   ============================= */
+header {
+  background-color: #175d89; /* Deep blue fallback */
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)); /* Dark gradient overlay */
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* =============================
+   NAVIGATION MENU
+   ============================= */
+nav ul {
+  display: flex; /* Horizontal layout */
+  flex-wrap: wrap; /* Wrap on smaller screens */
+  justify-content: center; /* Center the nav items */
+  list-style: none;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline-block; /* Inline items with padding and hover support */
+}
+
+nav ul li a,
+nav ul li button {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.3s ease; /* Smooth hover transition */
+}
+
+nav ul li a:hover,
+nav ul li button:hover {
+  background-color: #555; /* Darker background on hover */
+  border-radius: 4px;
+}
+
+/* =============================
+   MAIN LAYOUT
+   ============================= */
+main {
+  padding: 20px;
+  display: grid; /* Allows flexible section placement */
+  gap: 2rem; /* Space between sections */
+}
+
+/* =============================
+   SECTION STYLING
+   ============================= */
+section {
+  background-color: #f9f9f9; /* Light background for contrast */
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 30px; /* Space between sections */
+}
+
+/* =============================
+   COLLAPSIBLE SUBSECTIONS
+   ============================= */
+.subsection {
+  background-color: #e3f2fd; /* Light blue for nested info */
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  display: none; /* Hidden by default; shown by JS */
+}
+
+/* =============================
+   CONTACT FORM STYLING
+   ============================= */
+form {
+  max-width: 400px; /* Limits form width for readability */
+  margin-top: 10px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input,
+button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+/* =============================
+   FOOTER STYLES
+   ============================= */
+footer {
+  background-color: #007acc; /* Bright blue footer */
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.social-links img {
+  margin-right: 5px; /* Space between icon and label */
+}
+
+/* =============================
+   RESPONSIVE DESIGN (MOBILE)
+   ============================= */
+@media (max-width: 600px) {
+  nav ul {
+    flex-direction: column; /* Stack nav items vertically on small screens */
+  }
+}
