@@ -1,2 +1,2 @@
 import webbrowser
-webbrowser.open('https://mabialachance.github.io/')  # Example: 'file:///C:/Users/you/Desktop/index.html'
+webbrowser.open('https://chancemab.com')  # Example: 'file:///C:/Users/you/Desktop/index.html'
